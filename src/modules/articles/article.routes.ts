@@ -1,7 +1,7 @@
-import express from 'express';
+import { Router } from 'express';
 import articleController from './article.controller.js';
 
-const router = express.Router();
+const router = Router();
 
 router.get('/', articleController.getArticles);
 

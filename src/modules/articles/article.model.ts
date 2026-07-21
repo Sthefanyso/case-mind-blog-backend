@@ -1,11 +1,12 @@
 import db from '../../config/database.js';
+import type { Article } from './article.types.js';
 
-const findAll = async () => {
+const findAll = async (): Promise<Article[]> => {
     const [rows] = await db.query(
         'SELECT * FROM articles'
     );
 
-    return rows;
+    return rows as Article[];
 };
 
 export default {
