@@ -1,6 +1,6 @@
 import userModel from './user.model.js';
 import type { User } from './user.types.js';
-
+import bcrypt from 'bcrypt';
 
 const getUsers = async (): Promise<User[]> => {
     return await userModel.findAll();
@@ -19,10 +19,16 @@ const createUser = async (
     email: string,
     password: string
 ): Promise<User> => {
+
+    const hashedPassword = await bcrypt.hash(
+        password,
+        10
+    );
+
     return await userModel.create(
         name,
         email,
-        password
+        hashedPassword
     );
 };
 
