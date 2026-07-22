@@ -23,14 +23,15 @@ const findById = async (id: number): Promise<Article | null> => {
 const create = async (
     title: string,
     content: string,
-    author_id: number
+    author_id: number,
+    banner?: string
 ): Promise<Article> => {
     const [result] = await db.query(
         `
-        INSERT INTO articles (title, content, author_id)
-        VALUES (?, ?, ?)
+        INSERT INTO articles (title, content, author_id, banner)
+        VALUES (?, ?, ?, ?)
         `,
-        [title, content, author_id]
+        [title, content, author_id, banner]
     );
 
     const insertResult = result as { insertId: number };

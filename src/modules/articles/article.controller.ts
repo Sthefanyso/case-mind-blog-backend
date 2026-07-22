@@ -33,11 +33,14 @@ const createArticle = async (
     res: Response
 ): Promise<void> => {
     const { title, content, author_id } = req.body;
+    const banner = req.file?.filename;
+
 
     const article = await articleService.createArticle(
         title,
         content,
-        author_id
+        author_id,
+        banner
     );
 
     res.status(201).json(article);

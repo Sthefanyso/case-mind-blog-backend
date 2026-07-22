@@ -14,12 +14,14 @@ const getArticleById = async (
 const createArticle = async (
     title: string,
     content: string,
-    author_id: number
+    author_id: number,
+    banner?: string
 ): Promise<Article> => {
     return await articleModel.create(
         title,
         content,
-        author_id
+        author_id,
+        banner
     );
 };
 
