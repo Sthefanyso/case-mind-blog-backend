@@ -71,8 +71,15 @@ const updateArticle = async (
 
     const { title, content } = req.body;
 
-    const existingArticle = await articleService.getArticleById(id);
+    if (!title || !content) {
+        res.status(400).json({
+            message: 'Title and content are required'
+        });
 
+        return;
+    }
+
+    const existingArticle = await articleService.getArticleById(id);
 
     if (!existingArticle) {
         res.status(404).json({
@@ -98,6 +105,7 @@ const updateArticle = async (
 
     res.json(article);
 };
+
 const deleteArticle = async (
     req: Request,
     res: Response

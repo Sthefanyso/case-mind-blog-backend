@@ -33,7 +33,6 @@ const getUserById = async (
     res.json(user);
 };
 
-
 const createUser = async (
     req: Request,
     res: Response
@@ -41,15 +40,29 @@ const createUser = async (
 
     const { name, email, password } = req.body;
 
-    const user = await userService.createUser(
-        name,
-        email,
-        password
-    );
+    if (!name || !email || !password) {
+        res.status(400).json({
+            message: 'Name, email and password are required'
+        });
 
-    res.status(201).json(user);
+        return;
+    }
+
+    try {
+        const user = await userService.createUser(
+            name,
+            email,
+            password
+        );
+
+        res.status(201).json(user);
+
+    } catch (error) {
+        res.status(409).json({
+            message: 'Email already registered'
+        });
+    }
 };
-
 
 export default {
     getUsers,

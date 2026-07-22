@@ -20,15 +20,16 @@ const createUser = async (
     password: string
 ): Promise<User> => {
 
-    const hashedPassword = await bcrypt.hash(
-        password,
-        10
-    );
+    const existingUser = await userModel.findByEmail(email);
+
+    if (existingUser) {
+        throw new Error('Email already registered');
+    }
 
     return await userModel.create(
         name,
         email,
-        hashedPassword
+        password
     );
 };
 
