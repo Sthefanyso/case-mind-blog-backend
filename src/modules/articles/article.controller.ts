@@ -46,6 +46,7 @@ const createArticle = async (
     res.status(201).json(article);
 };
 
+
 const updateArticle = async (
     req: Request,
     res: Response
@@ -54,13 +55,10 @@ const updateArticle = async (
 
     const { title, content } = req.body;
 
-    const article = await articleService.updateArticle(
-        id,
-        title,
-        content
-    );
+    const existingArticle = await articleService.getArticleById(id);
 
-    if (!article) {
+
+    if (!existingArticle) {
         res.status(404).json({
             message: 'Article not found'
         });
@@ -68,14 +66,45 @@ const updateArticle = async (
         return;
     }
 
+    if (existingArticle.author_id !== req.user?.id) {
+        res.status(403).json({
+            message: 'You are not allowed to edit this article'
+        });
+
+        return;
+    }
+
+    const article = await articleService.updateArticle(
+        id,
+        title,
+        content
+    );
+
     res.json(article);
 };
-
 const deleteArticle = async (
     req: Request,
     res: Response
 ): Promise<void> => {
     const id = Number(req.params.id);
+
+    const existingArticle = await articleService.getArticleById(id);
+
+    if (!existingArticle) {
+        res.status(404).json({
+            message: 'Article not found'
+        });
+
+        return;
+    }
+
+    if (existingArticle.author_id !== req.user?.id) {
+        res.status(403).json({
+            message: 'You are not allowed to delete this article'
+        });
+
+        return;
+    }
 
     const deleted = await articleService.deleteArticle(id);
 

@@ -20,19 +20,23 @@ const authMiddleware = (
     const token = authHeader.split(' ')[1];
 
     try {
-        jwt.verify(
-            token,
-            process.env.JWT_SECRET as string
-        );
+    const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET as string
+    );
 
-        next();
+    req.user = decoded as {
+        id: number;
+        email: string;
+    };
 
-    } catch {
-        res.status(401).json({
-            message: 'Invalid token'
-        });
-    }
+    next();
 
+} catch {
+    res.status(401).json({
+        message: 'Invalid token'
+    });
+}
 };
 
 export default authMiddleware;
