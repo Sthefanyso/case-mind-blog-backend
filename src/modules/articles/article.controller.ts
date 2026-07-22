@@ -32,9 +32,25 @@ const createArticle = async (
     req: Request,
     res: Response
 ): Promise<void> => {
-    const { title, content, author_id } = req.body;
+    const { title, content } = req.body;
+    const author_id = req.user?.id;
     const banner = req.file?.filename;
 
+    if (!title || !content) {
+        res.status(400).json({
+            message: 'Title and content are required'
+        });
+
+        return;
+    }
+
+    if (!author_id) {
+        res.status(401).json({
+            message: 'User not authenticated'
+        });
+
+        return;
+    }
 
     const article = await articleService.createArticle(
         title,
