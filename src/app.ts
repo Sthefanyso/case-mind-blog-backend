@@ -6,6 +6,8 @@ const app = express();
 
 app.use(express.json());
 
+app.use('/uploads', express.static('uploads'));
+
 app.use('/articles', articleRoutes);
 app.use('/users', userRoutes);
 
