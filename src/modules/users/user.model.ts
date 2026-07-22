@@ -58,9 +58,23 @@ const create = async (
     return user as User;
 };
 
+const findByEmail = async (
+    email: string
+): Promise<User | null> => {
+    const [rows] = await db.query(
+        'SELECT * FROM users WHERE email = ?',
+        [email]
+    );
+
+    const users = rows as User[];
+
+    return users[0] ?? null;
+};
+
 
 export default {
     findAll,
     findById,
-    create
+    create,
+    findByEmail
 };

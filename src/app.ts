@@ -1,6 +1,7 @@
 import express from 'express';
 import articleRoutes from './modules/articles/article.routes.js';
 import userRoutes from './modules/users/user.routes.js';
+import authRoutes from './modules/auth/auth.routes.js';
 
 const app = express();
 
@@ -10,5 +11,6 @@ app.use('/uploads', express.static('uploads'));
 
 app.use('/articles', articleRoutes);
 app.use('/users', userRoutes);
+app.use('/auth', authRoutes);
 
 export default app;
